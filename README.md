@@ -156,23 +156,6 @@ stay in sync. `stoat.js` also re-exports the raw Stoat API types under
 `API` (`import { API } from "stoat.js"`) for anything not yet wrapped by
 either library.
 
-## ✅ Verified against the real stoat.js source
-
-Every method `stoatly.js` calls on `stoat.js` (pinned to `^7.3.6`) has been
-checked directly against the SDK's own TypeScript source
-(`stoatchat/javascript-client-sdk`), not guessed or inferred from examples:
-
-- Event: `client.on("messageCreate", (message) => ...)` — the handler receives a real `Message` class instance.
-- IDs are plain `.id` throughout (`message.id`, `channel.id`, `server.id`, `user.id`, `client.user.id`) — **not** `._id`. This was the one thing earlier drafts of this library got wrong, since it was written against an older Revolt-era convention.
-- `message.channel` and `message.server` are direct getters — no manual lookup needed.
-- `message.mentionIds` is a ready-made `string[]` — no need to regex-parse `<@id>` out of the content.
-- `message.channel.sendMessage(content: string)`, `message.reply(content, mention?)`, `message.edit({ content })`, `message.delete()`, `message.react(emoji: string)`, and `user.openDM()` are all real, confirmed methods with those exact signatures.
-- `client.channels.get(id)` / `.fetch(id)` and `client.users.get(id)` / `.fetch(id)` are real methods on the respective collections.
-- Mention syntax is `<@ULID>`, matching `$mention`'s output.
-
-The parser, interpreter, `$if`/`$repeat`/`$math`/variable functions don't
-touch `stoat.js`'s API at all, so they were never in question.
-
 ## Project layout
 
 ```
