@@ -1,0 +1,3 @@
+node_modules/
+stoatly.db.json
+.env
