@@ -45,4 +45,4 @@ npm run lint  # syntax-checks every source file
 Open an issue with:
 - The command `code` string that misbehaved
 - What you expected vs. what happened
-- Your `stoatly.js` and `stoat.js` versions (`npm ls stoatly.js stoat.js`)
+- Your `stoatly.js` and `stoat.js` versions (`npm ls @stoatlyjs/stoatly.js stoat.js`)
