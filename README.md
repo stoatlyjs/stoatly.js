@@ -1,6 +1,7 @@
 # stoatly.js
 
 [![npm version](https://img.shields.io/npm/v/stoatly.js.svg)](https://www.npmjs.com/package/stoatly.js)
+[![CI](https://github.com/stoatlyjs/stoatly.js/actions/workflows/ci.yml/badge.svg)](https://github.com/stoatlyjs/stoatly.js/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 A **string-based command framework** for [Stoat](https://stoat.chat)
