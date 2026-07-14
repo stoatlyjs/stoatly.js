@@ -1,0 +1,45 @@
+{
+  "name": "@stoatlyjs/stoatly.js",
+  "version": "0.1.0",
+  "description": "A string-based command framework for building bots on the Stoat chat platform.",
+  "main": "index.js",
+  "type": "module",
+  "files": [
+    "index.js",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node --test test/**/*.test.js",
+    "lint": "node --check index.js && find src -name \"*.js\" -exec node --check {} \\;",
+    "prepublishOnly": "npm test"
+  },
+  "keywords": [
+    "stoat",
+    "stoat.js",
+    "revolt",
+    "bot",
+    "framework",
+    "command-handler"
+  ],
+  "author": "",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stoatlyjs/stoatly.js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/stoatlyjs/stoatly.js/issues"
+  },
+  "homepage": "https://github.com/stoatlyjs/stoatly.js#readme",
+  "dependencies": {
+    "stoat.js": "^7.3.6"
+  },
+  "engines": {
+    "node": ">=22.15.0"
+  }
+}
