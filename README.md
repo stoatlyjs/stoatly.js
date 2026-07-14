@@ -1,6 +1,6 @@
 # stoatly.js
 
-[![npm version](https://img.shields.io/npm/v/%40stoatlyjs%2Fstoatly.js.svg)](https://www.npmjs.com/package/@stoatlyjs/stoatly.js)
+[![npm version](https://img.shields.io/npm/v/stoatly.js.svg)](https://www.npmjs.com/package/stoatly.js)
 [![CI](https://github.com/stoatlyjs/stoatly.js/actions/workflows/ci.yml/badge.svg)](https://github.com/stoatlyjs/stoatly.js/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
@@ -12,7 +12,7 @@ Instead of writing raw event handlers, you write commands as strings containing
 `$functions`:
 
 ```js
-import { StoatlyClient } from "@stoatlyjs/stoatly.js";
+import { StoatlyClient } from "stoatly.js";
 
 const client = new StoatlyClient({ prefix: "!" });
 
@@ -43,12 +43,12 @@ client.login("YOUR_BOT_TOKEN");
 ## Requirements
 
 - Node.js **v22.15.0** or later, since `stoat.js` itself requires it (Deno v2.2+ also works).
-- `stoatly.js` is an **ES module** (`"type": "module"`). Use `import`, not `require()`. If your project is CommonJS, either switch it to `"type": "module"` in your own `package.json`, or load it with a dynamic `import("@stoatlyjs/stoatly.js")`.
+- `stoatly.js` is an **ES module** (`"type": "module"`). Use `import`, not `require()`. If your project is CommonJS, either switch it to `"type": "module"` in your own `package.json`, or load stoatly.js with a dynamic `import("stoatly.js")`.
 
 ## Install
 
 ```bash
-npm install @stoatlyjs/stoatly.js
+npm install stoatly.js
 ```
 
 That's it — `stoat.js` ships as a dependency of `stoatly.js` (currently pinned to `^7.3.6`). You don't need to `npm install stoat.js` yourself.
@@ -155,23 +155,6 @@ Solid.js dashboard), you can read straight from `client.client` and it'll
 stay in sync. `stoat.js` also re-exports the raw Stoat API types under
 `API` (`import { API } from "stoat.js"`) for anything not yet wrapped by
 either library.
-
-## ✅ Verified against the real stoat.js source
-
-Every method `stoatly.js` calls on `stoat.js` (pinned to `^7.3.6`) has been
-checked directly against the SDK's own TypeScript source
-(`stoatchat/javascript-client-sdk`), not guessed or inferred from examples:
-
-- Event: `client.on("messageCreate", (message) => ...)` — the handler receives a real `Message` class instance.
-- IDs are plain `.id` throughout (`message.id`, `channel.id`, `server.id`, `user.id`, `client.user.id`) — **not** `._id`. This was the one thing earlier drafts of this library got wrong, since it was written against an older Revolt-era convention.
-- `message.channel` and `message.server` are direct getters — no manual lookup needed.
-- `message.mentionIds` is a ready-made `string[]` — no need to regex-parse `<@id>` out of the content.
-- `message.channel.sendMessage(content: string)`, `message.reply(content, mention?)`, `message.edit({ content })`, `message.delete()`, `message.react(emoji: string)`, and `user.openDM()` are all real, confirmed methods with those exact signatures.
-- `client.channels.get(id)` / `.fetch(id)` and `client.users.get(id)` / `.fetch(id)` are real methods on the respective collections.
-- Mention syntax is `<@ULID>`, matching `$mention`'s output.
-
-The parser, interpreter, `$if`/`$repeat`/`$math`/variable functions don't
-touch `stoat.js`'s API at all, so they were never in question.
 
 ## Project layout
 
