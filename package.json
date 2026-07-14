@@ -1,5 +1,5 @@
 {
-  "name": "@stoatlyjs/stoatly.js",
+  "name": "stoatly.js",
   "version": "0.1.0",
   "description": "A string-based command framework for building bots on the Stoat chat platform.",
   "main": "index.js",
@@ -25,9 +25,6 @@
   ],
   "author": "",
   "license": "MIT",
-  "publishConfig": {
-    "access": "public"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/stoatlyjs/stoatly.js.git"
