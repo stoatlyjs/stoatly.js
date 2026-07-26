@@ -1,0 +1,14 @@
+name: Stoat Webhook
+on:
+  push:
+  pull_request:
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send webhook
+        run: |
+          curl -X POST "${{ secrets.STOAT_WEBHOOK }}" \
+            -H "Content-Type: application/json" \
+            -d '{"content": "**${{ github.actor }}** pushed to `${{ github.repository }}`: ${{ github.event.head_commit.message }}"}'
