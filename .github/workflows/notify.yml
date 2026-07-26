@@ -10,26 +10,17 @@ jobs:
         run: |
           PAYLOAD=$(jq -n \
             --arg title "New push to ${{ github.repository }}" \
-            --arg desc "${{ github.event.head_commit.message }}" \
+            --arg desc "${{ github.event.head_commit.message }}\n\nBranch: ${{ github.ref_name }}\nCommit: ${{ github.sha }}" \
             --arg url "${{ github.event.head_commit.url }}" \
-            --arg actor "${{ github.actor }}" \
-            --arg avatar "https://github.com/${{ github.actor }}.png" \
-            --arg branch "${{ github.ref_name }}" \
-            --arg repo "${{ github.repository }}" \
-            --arg sha "${{ github.sha }}" \
+            --arg icon "https://github.com/${{ github.actor }}.png" \
+            --arg colour "#2ECC71" \
             '{
               embeds: [{
                 title: $title,
                 description: $desc,
                 url: $url,
-                color: 3066993,
-                author: { name: $actor, icon_url: $avatar },
-                fields: [
-                  { name: "Branch", value: $branch, inline: true },
-                  { name: "Commit", value: ($sha[0:7]), inline: true }
-                ],
-                footer: { text: $repo },
-                timestamp: (now | todate)
+                icon_url: $icon,
+                colour: $colour
               }]
             }')
           curl -X POST "${{ secrets.STOAT_WEBHOOK }}" -H "Content-Type: application/json" -d "$PAYLOAD"
