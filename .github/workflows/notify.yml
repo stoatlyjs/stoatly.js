@@ -7,12 +7,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Send embed webhook
+        env:
+          COMMIT_MSG: ${{ github.event.head_commit.message }}
+          COMMIT_URL: ${{ github.event.head_commit.url }}
+          BRANCH: ${{ github.ref_name }}
+          SHA: ${{ github.sha }}
+          ACTOR: ${{ github.actor }}
+          REPO: ${{ github.repository }}
         run: |
+          SHORT_SHA="${SHA:0:7}"
+          DESC="${COMMIT_MSG}
+
+          Branch: ${BRANCH}
+          Commit: ${SHORT_SHA}"
+
           PAYLOAD=$(jq -n \
-            --arg title "New push to ${{ github.repository }}" \
-            --arg desc "${{ github.event.head_commit.message }}\n\nBranch: ${{ github.ref_name }}\nCommit: ${{ github.sha }}" \
-            --arg url "${{ github.event.head_commit.url }}" \
-            --arg icon "https://github.com/${{ github.actor }}.png" \
+            --arg title "New push to ${REPO}" \
+            --arg desc "$DESC" \
+            --arg url "$COMMIT_URL" \
+            --arg icon "https://github.com/${ACTOR}.png" \
             --arg colour "#2ECC71" \
             '{
               embeds: [{
