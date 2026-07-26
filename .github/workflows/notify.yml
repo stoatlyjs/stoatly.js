@@ -1,7 +1,6 @@
-name: Webhook
+name: Notify
 on:
   push:
-  pull_request:
 
 jobs:
   notify:
@@ -9,34 +8,28 @@ jobs:
     steps:
       - name: Send embed webhook
         run: |
-          curl -X POST "${{ secrets.STOAT_WEBHOOK }}" \
-            -H "Content-Type: application/json" \
-            -d '{
-              "embeds": [
-                {
-                  "title": "New push to ${{ github.repository }}",
-                  "description": "${{ github.event.head_commit.message }}",
-                  "url": "${{ github.event.head_commit.url }}",
-                  "color": 3066993,
-                  "author": {
-                    "name": "${{ github.actor }}",
-                    "icon_url": "https://github.com/${{ github.actor }}.png"
-                  },
-                  "fields": [
-                    {
-                      "name": "Branch",
-                      "value": "${{ github.ref_name }}",
-                      "inline": true
-                    },
-                    {
-                      "name": "Repository",
-                      "value": "${{ github.repository }}",
-                      "inline": true
-                    }
-                  ],
-                  "footer": {
-                    "text": "GitHub Actions"
-                  }
-                }
-              ]
-            }'
+          PAYLOAD=$(jq -n \
+            --arg title "New push to ${{ github.repository }}" \
+            --arg desc "${{ github.event.head_commit.message }}" \
+            --arg url "${{ github.event.head_commit.url }}" \
+            --arg actor "${{ github.actor }}" \
+            --arg avatar "https://github.com/${{ github.actor }}.png" \
+            --arg branch "${{ github.ref_name }}" \
+            --arg repo "${{ github.repository }}" \
+            --arg sha "${{ github.sha }}" \
+            '{
+              embeds: [{
+                title: $title,
+                description: $desc,
+                url: $url,
+                color: 3066993,
+                author: { name: $actor, icon_url: $avatar },
+                fields: [
+                  { name: "Branch", value: $branch, inline: true },
+                  { name: "Commit", value: ($sha[0:7]), inline: true }
+                ],
+                footer: { text: $repo },
+                timestamp: (now | todate)
+              }]
+            }')
+          curl -X POST "${{ secrets.STOAT_WEBHOOK }}" -H "Content-Type: application/json" -d "$PAYLOAD"
