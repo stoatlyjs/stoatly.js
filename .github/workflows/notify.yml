@@ -1,4 +1,4 @@
-name: Stoat Webhook
+name: Webhook
 on:
   push:
   pull_request:
@@ -7,8 +7,36 @@ jobs:
   notify:
     runs-on: ubuntu-latest
     steps:
-      - name: Send webhook
+      - name: Send embed webhook
         run: |
           curl -X POST "${{ secrets.STOAT_WEBHOOK }}" \
             -H "Content-Type: application/json" \
-            -d '{"content": "**${{ github.actor }}** pushed to `${{ github.repository }}`: ${{ github.event.head_commit.message }}"}'
+            -d '{
+              "embeds": [
+                {
+                  "title": "New push to ${{ github.repository }}",
+                  "description": "${{ github.event.head_commit.message }}",
+                  "url": "${{ github.event.head_commit.url }}",
+                  "color": 3066993,
+                  "author": {
+                    "name": "${{ github.actor }}",
+                    "icon_url": "https://github.com/${{ github.actor }}.png"
+                  },
+                  "fields": [
+                    {
+                      "name": "Branch",
+                      "value": "${{ github.ref_name }}",
+                      "inline": true
+                    },
+                    {
+                      "name": "Repository",
+                      "value": "${{ github.repository }}",
+                      "inline": true
+                    }
+                  ],
+                  "footer": {
+                    "text": "GitHub Actions"
+                  }
+                }
+              ]
+            }'
