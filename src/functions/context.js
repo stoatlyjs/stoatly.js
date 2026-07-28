@@ -60,4 +60,24 @@ export default {
     name: "ping",
     execute: (_args, ctx) => String(ctx.client.ping ?? 0),
   },
+
+  channelname: {
+    name: "channelName",
+    execute: (_args, ctx) => ctx.channel?.name ?? "",
+  },
+
+  servername: {
+    name: "serverName",
+    execute: (_args, ctx) => ctx.server?.name ?? "",
+  },
+
+  mentionscount: {
+    name: "mentionsCount",
+    execute: (_args, ctx) => String(ctx.mentions?.length ?? 0),
+  },
+
+  isbot: {
+    name: "isBot",
+    execute: (_args, ctx) => String(Boolean(ctx.message.author?.bot)),
+  },
 };
