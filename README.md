@@ -48,9 +48,9 @@ client.login("TOKEN");
 npm install stoatly.js
 ```
 
-That's it — `stoat.js` ships as a dependency of `stoatly.js` (currently pinned to `^7.3.6`). You don't need to `npm install stoat.js` yourself.
+That's it - `stoat.js` ships as a dependency of `stoatly.js` (currently pinned to `^7.3.6`). You don't need to `npm install stoat.js` yourself.
 
-If you ever need to use `stoat.js` directly alongside stoatly.js (e.g. to reach a newer feature stoatly.js doesn't wrap yet), `client.client` gives you the raw `stoat.js` `Client` instance — see "Escaping to raw stoat.js" below.
+If you ever need to use `stoat.js` directly alongside stoatly.js (e.g. to reach a newer feature stoatly.js doesn't wrap yet), `client.client` gives you the raw `stoat.js` `Client` instance. see "Escaping to raw stoat.js" below.
 
 ## Built-in functions
 
@@ -160,7 +160,7 @@ client.on("messageCreate", (message) => {
 
 `client.client` is the underlying `stoat.js` `Client` instance if you need
 lower-level access. Its objects (users, channels, messages, etc.) are
-reactive under the hood — if you're building a UI on top of a bot (e.g. a
+reactive under the hood - if you're building a UI on top of a bot (e.g. a
 Solid.js dashboard), you can read straight from `client.client` and it'll
 stay in sync. `stoat.js` also re-exports the raw Stoat API types under
 `API` (`import { API } from "stoat.js"`) for anything not yet wrapped by
