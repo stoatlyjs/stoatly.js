@@ -3,14 +3,10 @@
 [![npm version](https://img.shields.io/npm/v/stoatly.js.svg)](https://www.npmjs.com/package/stoatly.js)
 [![CI](https://github.com/stoatlyjs/stoatly.js/actions/workflows/ci.yml/badge.svg)](https://github.com/stoatlyjs/stoatly.js/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-![Website](https://img.shields.io/website?url=https://stoatly.js.org&label=stoatly.js.org)
+[![Website](https://img.shields.io/website?url=https://stoatly.js.org&label=stoatly.js.org)](https://stoatly.js.org)
 
 A **string-based command framework** for [Stoat](https://stoat.chat)
-(the open-source chat platform formerly known as Revolt), built on top of the
-official [`stoat.js`](https://github.com/stoatchat/javascript-client-sdk) client.
-
-Instead of writing raw event handlers, you write commands as strings containing
-`$functions`:
+(the open-source chat platform formerly known as Revolt).
 
 ```js
 import { StoatlyClient } from "stoatly.js";
@@ -38,13 +34,13 @@ client.command({
   `,
 });
 
-client.login("YOUR_BOT_TOKEN");
+client.login("TOKEN");
 ```
 
 ## Requirements
 
 - Node.js **v22.15.0** or later, since `stoat.js` itself requires it (Deno v2.2+ also works).
-- `stoatly.js` is an **ES module** (`"type": "module"`). Use `import`, not `require()`. If your project is CommonJS, either switch it to `"type": "module"` in your own `package.json`, or load stoatly.js with a dynamic `import("stoatly.js")`.
+- `stoatly.js` is an **ES module** (`"type": "module"`). Use `import`, not `require()`. If your project is CommonJS, either switch it to `"type": "module"` in your own `package.json`, or load it with a dynamic `import("stoatly.js")`.
 
 ## Install
 
@@ -56,22 +52,6 @@ That's it — `stoat.js` ships as a dependency of `stoatly.js` (currently pinned
 
 If you ever need to use `stoat.js` directly alongside stoatly.js (e.g. to reach a newer feature stoatly.js doesn't wrap yet), `client.client` gives you the raw `stoat.js` `Client` instance — see "Escaping to raw stoat.js" below.
 
-## How the DSL works
-
-- `$functionName[arg1;arg2;...]` calls a function with semicolon-separated arguments.
-- `$functionName` with no brackets calls it with zero arguments (e.g. `$ping`).
-- Arguments can contain other `$functions`, nested freely.
-- `$$` produces a literal `$`.
-- Plain `[` / `]` in text are fine — the parser tracks bracket depth so they
-  don't get confused with argument lists, but semicolons `;` are always
-  treated as argument separators, even in plain text, so avoid stray `;`
-  inside a function's arguments (use `$getVar`-style separate args instead).
-
-Some functions are **lazy** (`$if`, `$onlyIf`, `$repeat`) — they get their
-raw, unevaluated arguments so they can choose which branch to run instead of
-evaluating everything up front. This is how `$if` avoids running the "else"
-branch's side effects (like sending a message) when the condition is true.
-
 ## Built-in functions
 
 **Context / reading**
@@ -81,10 +61,12 @@ branch's side effects (like sending a message) when the condition is true.
 | `$args[index?]` | All args joined, or one arg by index |
 | `$argsCount` | Number of args passed to the command |
 | `$mention[index?]` | Formats a mentioned user's ID as `<@id>` |
+| `$mentionsCount` | Number of users mentioned in the message |
 | `$authorID` | ID of the message author |
 | `$username` | Username of the message author |
-| `$channelID` | Current channel ID |
-| `$serverID` | Current server ID |
+| `$isBot` | `"true"`/`"false"` - whether the message author is a bot |
+| `$channelID` / `$channelName` | Current channel's ID / display name |
+| `$serverID` / `$serverName` | Current server's ID / name |
 | `$prefix` | The prefix that triggered this command |
 | `$ping` | Client latency in ms |
 
@@ -98,12 +80,17 @@ branch's side effects (like sending a message) when the condition is true.
 | `$addReaction[emoji]` | Reacts to the last sent (or triggering) message |
 | `$dm[userID;content]` | Sends a direct message to a user |
 | `$wait[ms]` | Pauses execution |
+| `$startTyping` / `$stopTyping` | Shows/hides the typing indicator in the current channel |
 
 **Logic**
 | Function | Description |
 |---|---|
 | `$if[condition;then;else?]` | Branches; supports `==`,`!=`,`>`,`<`,`>=`,`<=`,`&&`,`\|\|` |
-| `$onlyIf[condition;errorMessage?]` | Stops the command if the condition is false |
+| `$not[condition]` | Negates a condition string - `"true"`/`"false"` |
+| `$switch[value;case1;result1;case2;result2;...;default?]` | Matches `value` against each `case` in order; only the matching branch (or `default`) is evaluated |
+| `$onlyIf[condition;errorMessage?]` | Stops the whole command if the condition is false, optionally sending `errorMessage` first |
+| `$stop[message?]` | Unconditionally stops the rest of the command, optionally sending `message` first |
+| `$try[code;fallback?]` | Runs `code`; if it throws or triggers `$stop`/`$onlyIf`, runs `fallback` instead **without** halting the outer command |
 | `$repeat[count;code]` | Runs `code` up to `count` times (max 1000) |
 | `$loopIndex` | Current index inside `$repeat` (0-based) |
 
@@ -116,15 +103,37 @@ branch's side effects (like sending a message) when the condition is true.
 | `$deleteVar[name;scope?]` | Deletes a value |
 | `$hasVar[name;scope?]` | `"true"`/`"false"` |
 
-**Utility**
+**Utility - general**
 | Function | Description |
 |---|---|
 | `$math[expression]` | Safe arithmetic: `+ - * / % ^ ()` |
 | `$random[min;max]` | Random integer, inclusive |
 | `$randomText[a;b;c;...]` | Picks one argument at random |
-| `$upperCase[text]` / `$lowerCase[text]` | Case conversion |
 | `$comment[anything]` | Evaluates to nothing (for notes in your code) |
 | `$newline` | Inserts `\n` |
+
+**Utility - strings**
+| Function | Description |
+|---|---|
+| `$length[text]` | Character count |
+| `$substring[text;start;end?]` | Slice of `text` |
+| `$replace[text;search;replacement]` | Replaces every occurrence of `search` |
+| `$split[text;separator;index?]` | Splits `text`; returns one part by index, or all parts comma-joined |
+| `$trim[text]` | Removes leading/trailing whitespace |
+| `$indexOf[text;search]` | Position of `search` in `text`, or `-1` |
+| `$includes[text;search]` | `"true"`/`"false"` |
+| `$capitalize[text]` | Uppercases the first character |
+| `$upperCase[text]` / `$lowerCase[text]` | Case conversion |
+| `$padStart[text;length;padChar?]` / `$padEnd[...]` | Pads to a fixed length |
+| `$repeatText[text;count]` | Repeats `text` `count` times (max 1000) |
+
+**Utility - numbers & dates**
+| Function | Description |
+|---|---|
+| `$round[number;decimals?]` | Rounds to `decimals` places (default 0) |
+| `$floor[number]` / `$ceil[number]` / `$abs[number]` | Standard math rounding/absolute value |
+| `$timestamp` | Current time as unix milliseconds |
+| `$formatDate[ms?]` | ISO 8601 string for `ms`, or the current time if omitted |
 
 ## Custom functions
 
@@ -140,7 +149,7 @@ For functions that need to control evaluation of their own arguments (like
 
 ## Escaping to raw stoat.js
 
-You can still listen to raw events directly if you need something the DSL
+You can still listen to raw events directly if you need something stoatly.js
 doesn't cover yet:
 
 ```js
