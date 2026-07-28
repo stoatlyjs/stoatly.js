@@ -37,6 +37,23 @@ client.command({
   code: "Hi there, $mention! I'm a stoatly.js bot running on Stoat.",
 });
 
+client.command({
+  name: "greet",
+  code: `$switch[$args[0];
+    morning;Good morning!;
+    night;Good night!;
+    I don't know that time of day - try "morning" or "night".
+  ]`,
+});
+
+client.command({
+  name: "weather",
+  code: `$startTyping$try[
+    $stop[This command isn't wired up to a real weather API yet.];
+    Couldn't fetch the weather right now, sorry!
+  ]$stopTyping`,
+});
+
 // You can still register a custom function if the built-ins aren't enough:
 client.addFunction({
   name: "shout",
