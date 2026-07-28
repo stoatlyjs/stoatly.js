@@ -37,6 +37,11 @@ async function evalNodes(nodes, ctx, functions) {
         result = await fn.execute(args, ctx);
       }
     } catch (err) {
+      // "Stop" signals (from $onlyIf, $stop) are deliberate command-halting
+      // errors, not normal function failures - they must propagate all the
+      // way up through any nested evalNodes calls (branches, loops, $try)
+      // to the top-level caller, not get swallowed into inline error text.
+      if (err.isStop) throw err;
       result = `[stoatly.js: error in $${node.name} - ${err.message}]`;
     }
 
