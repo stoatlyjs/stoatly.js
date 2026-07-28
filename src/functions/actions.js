@@ -76,4 +76,20 @@ export default {
       return "";
     },
   },
+
+  starttyping: {
+    name: "startTyping",
+    execute: (_args, ctx) => {
+      ctx.channel?.startTyping();
+      return "";
+    },
+  },
+
+  stoptyping: {
+    name: "stopTyping",
+    execute: (_args, ctx) => {
+      ctx.channel?.stopTyping();
+      return "";
+    },
+  },
 };
