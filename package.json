@@ -1,6 +1,6 @@
 {
   "name": "stoatly.js",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A string-based command framework for building bots on the Stoat chat platform.",
   "main": "index.js",
   "type": "module",
@@ -32,7 +32,7 @@
   "bugs": {
     "url": "https://github.com/stoatlyjs/stoatly.js/issues"
   },
-  "homepage": "https://github.com/stoatlyjs/stoatly.js#readme",
+  "homepage": "https://stoatly.js.org",
   "dependencies": {
     "stoat.js": "^7.3.6"
   },
