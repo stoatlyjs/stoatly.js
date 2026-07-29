@@ -3,7 +3,7 @@
 [![npm version](https://img.shields.io/npm/v/stoatly.js.svg?style=flat-square)](https://www.npmjs.com/package/stoatly.js)
 [![CI](https://github.com/stoatlyjs/stoatly.js/actions/workflows/ci.yml/badge.svg?style=flat-square)](https://github.com/stoatlyjs/stoatly.js/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](LICENSE)
-[![Website](https://img.shields.io/website?url=https://stoatly.js.org&label=stoatly.js.org?style=flat-square)](https://stoatly.js.org)
+[![Website](https://img.shields.io/website?style=flat-square&url=https://stoatly.js.org&label=stoatly.js.org)](https://stoatly.js.org)
 
 A **string-based command framework** for [Stoat](https://stoat.chat)
 (the open-source chat platform formerly known as Revolt).
