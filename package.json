@@ -1,6 +1,6 @@
 {
   "name": "stoatly.js",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "A string-based command framework for building bots on the Stoat chat platform.",
   "main": "index.js",
   "type": "module",
