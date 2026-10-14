@@ -1,8 +1,8 @@
-import context from "./context.js";
-import actions from "./actions.js";
-import logic from "./logic.js";
-import variables from "./variables.js";
-import utility from "./utility.js";
+import context from "./context/index.js";
+import actions from "./actions/index.js";
+import logic from "./logic/index.js";
+import variables from "./variables/index.js";
+import utility from "./utility/index.js";
 
 const registry = {
   ...context,
@@ -13,4 +13,3 @@ const registry = {
 };
 
 export default registry;
-
