@@ -7,7 +7,6 @@
 
 ---
 
-<br>
 <div align="center">
   
 [![npm version](https://img.shields.io/npm/v/stoatly.js.svg?style=flat-square)](https://www.npmjs.com/package/stoatly.js)&nbsp;&nbsp;
