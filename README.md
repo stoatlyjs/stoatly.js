@@ -4,7 +4,9 @@
 		<a href="https://stoatly.js.org/"><img src="https://stoatly.js.org/assets/logo.png" width="546" alt="stoatly.js" /></a>
 	</p>
 </div>
+
 ---
+
 <br>
 <div align="center">
   
