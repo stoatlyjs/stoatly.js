@@ -4,9 +4,6 @@
 		<a href="https://stoatly.js.org/"><img src="https://stoatly.js.org/assets/logo.png" width="546" alt="stoatly.js" /></a>
 	</p>
 </div>
-
----
-
 <div align="center">
   
 [![npm version](https://img.shields.io/npm/v/stoatly.js.svg?style=flat-square)](https://www.npmjs.com/package/stoatly.js)&nbsp;&nbsp;
